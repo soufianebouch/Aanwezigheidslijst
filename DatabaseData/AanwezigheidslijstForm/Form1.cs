@@ -12,13 +12,20 @@ using System.Data.Entity;
 
 namespace AanwezigheidslijstForm
 {
-    public partial class Form1 : Form
+    public partial class Beheer : Form
     {
-        public Form1()
+        public Beheer()
         {
             InitializeComponent();
         }
 
-      
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            //using (var create = new CreateForm())
+            //{
+                var create = new CreateForm();
+                create.Show();
+            //}
+        }
     }
 }
