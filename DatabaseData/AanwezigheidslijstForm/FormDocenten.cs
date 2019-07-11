@@ -56,5 +56,17 @@ namespace AanwezigheidslijstForm
                 }
             }
         }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                Docenten docent = context.Docenten.FirstOrDefault(a => a.Naam == listBox1.Text);
+                context.Docenten.Remove(docent);
+                DocentenOpleidingen opl = context.DocentenOpleidingen.FirstOrDefault(a => a.Id == docent.Id);
+                context.SaveChanges();
+            }
+           
+        }
     }
 }
