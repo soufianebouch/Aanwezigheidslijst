@@ -24,20 +24,19 @@ namespace AanwezigheidslijstForm
             {
                 using (var context = new AanwezigheidslijstContext())
                 {
-                    var deelnemersOpl = new DeelnemersOpleidingen();
-
+                    var docentOpl = new DocentenOpleidingen();
 
                     var checkbox = comboBox1.SelectedItem as Opleidingsinformatie;
                     var nietOplDag = context.Opleidingsinformatie.SingleOrDefault(a => a.Opleiding == checkbox.Opleiding);
-                    deelnemersOpl.Opleidingsinformatie = nietOplDag;
+                    docentOpl.Opleidingsinformatie = nietOplDag;
 
-                    var checkbox2 = comboBox2.SelectedItem as Deelnemers;
-                    var deelOpl = context.Deelnemers.SingleOrDefault(a => a.Id == checkbox2.Id);
-                    deelnemersOpl.Deelnemers = deelOpl;
+                    var checkbox2 = comboBox2.SelectedItem as Docenten;
+                    var deelOpl = context.Docenten.SingleOrDefault(a => a.Id == checkbox2.Id);
+                    docentOpl.Docenten = deelOpl;
 
-                    context.DeelnemersOpleidingen.Add(deelnemersOpl);
+                    context.DocentenOpleidingen.Add(docentOpl);
                     context.SaveChanges();
-                    MessageBox.Show("deelnemer aan opleiding toegevoegd");
+                    MessageBox.Show("Docent aan opleiding toegevoegd");
                 }
                 this.Close();
             }
@@ -50,6 +49,25 @@ namespace AanwezigheidslijstForm
         private void Button2_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void FormDocentenOpleidingen_Load(object sender, EventArgs e)
+        {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                var opleidingen = context.Opleidingsinformatie.ToList();
+                foreach (var item in opleidingen)
+                {
+                    comboBox1.DisplayMember = nameof(Opleidingsinformatie.Opleiding);
+                    comboBox1.Items.Add(item);
+                }
+                var docenten = context.Docenten.ToList();
+                foreach (var item in docenten)
+                {
+                    comboBox2.DisplayMember = nameof(Docenten.Naam);
+                    comboBox2.Items.Add(item);
+                }
+            }
         }
     }
 }

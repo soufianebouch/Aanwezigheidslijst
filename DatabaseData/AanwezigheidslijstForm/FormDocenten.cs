@@ -44,5 +44,17 @@ namespace AanwezigheidslijstForm
         {
             this.Close();
         }
+
+        private void FormDocenten_Load(object sender, EventArgs e)
+        {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                foreach (var item in context.Docenten)
+                {
+                    listBox1.DisplayMember = nameof(Docenten.Naam);
+                    listBox1.Items.Add(item);
+                }
+            }
+        }
     }
 }

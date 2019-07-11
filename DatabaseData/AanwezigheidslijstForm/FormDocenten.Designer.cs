@@ -34,11 +34,13 @@
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxContactpersoon = new System.Windows.Forms.TextBox();
             this.textBoxOpleiding = new System.Windows.Forms.TextBox();
+            this.entityCommand1 = new System.Data.Entity.Core.EntityClient.EntityCommand();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(192, 125);
+            this.button2.Location = new System.Drawing.Point(190, 130);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(95, 32);
             this.button2.TabIndex = 37;
@@ -48,7 +50,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(81, 125);
+            this.button1.Location = new System.Drawing.Point(79, 130);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(95, 32);
             this.button1.TabIndex = 35;
@@ -59,7 +61,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(35, 59);
+            this.label4.Location = new System.Drawing.Point(33, 64);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(36, 13);
             this.label4.TabIndex = 34;
@@ -68,7 +70,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(35, 33);
+            this.label3.Location = new System.Drawing.Point(33, 38);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(35, 13);
             this.label3.TabIndex = 33;
@@ -76,23 +78,40 @@
             // 
             // textBoxContactpersoon
             // 
-            this.textBoxContactpersoon.Location = new System.Drawing.Point(137, 30);
+            this.textBoxContactpersoon.Location = new System.Drawing.Point(135, 35);
             this.textBoxContactpersoon.Name = "textBoxContactpersoon";
             this.textBoxContactpersoon.Size = new System.Drawing.Size(100, 20);
             this.textBoxContactpersoon.TabIndex = 31;
             // 
             // textBoxOpleiding
             // 
-            this.textBoxOpleiding.Location = new System.Drawing.Point(137, 56);
+            this.textBoxOpleiding.Location = new System.Drawing.Point(135, 61);
             this.textBoxOpleiding.Name = "textBoxOpleiding";
             this.textBoxOpleiding.Size = new System.Drawing.Size(100, 20);
             this.textBoxOpleiding.TabIndex = 30;
+            // 
+            // entityCommand1
+            // 
+            this.entityCommand1.CommandTimeout = 0;
+            this.entityCommand1.CommandTree = null;
+            this.entityCommand1.Connection = null;
+            this.entityCommand1.EnablePlanCaching = true;
+            this.entityCommand1.Transaction = null;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(374, 35);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(330, 199);
+            this.listBox1.TabIndex = 38;
             // 
             // FormDocenten
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(518, 281);
+            this.ClientSize = new System.Drawing.Size(795, 405);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label4);
@@ -101,6 +120,7 @@
             this.Controls.Add(this.textBoxOpleiding);
             this.Name = "FormDocenten";
             this.Text = "Docenten";
+            this.Load += new System.EventHandler(this.FormDocenten_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -114,5 +134,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxContactpersoon;
         private System.Windows.Forms.TextBox textBoxOpleiding;
+        private System.Data.Entity.Core.EntityClient.EntityCommand entityCommand1;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }

@@ -52,5 +52,11 @@ namespace AanwezigheidslijstForm
             var create = new FormDocentenOpleidingen();
             create.Show();
         }
+
+        private void Button6_Click(object sender, EventArgs e)
+        {
+            var create = new FormTijdsregistratie();
+            create.Show();
+        }
     }
 }
