@@ -36,6 +36,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxContactpersoon = new System.Windows.Forms.TextBox();
             this.textBoxOpleiding = new System.Windows.Forms.TextBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // button2
@@ -106,11 +109,42 @@
             this.textBoxOpleiding.Size = new System.Drawing.Size(100, 20);
             this.textBoxOpleiding.TabIndex = 16;
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(614, 273);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 43;
+            this.button4.Text = "Edit";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.Button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(494, 273);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 42;
+            this.button3.Text = "Delete";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.Button3_Click);
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(454, 38);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(330, 199);
+            this.listBox1.TabIndex = 41;
+            // 
             // FormDeelnemers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(465, 213);
+            this.ClientSize = new System.Drawing.Size(840, 360);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.dateTimePicker2);
             this.Controls.Add(this.button1);
@@ -121,6 +155,7 @@
             this.Controls.Add(this.textBoxOpleiding);
             this.Name = "FormDeelnemers";
             this.Text = "Deelnemers";
+            this.Load += new System.EventHandler(this.FormDeelnemers_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -136,5 +171,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxContactpersoon;
         private System.Windows.Forms.TextBox textBoxOpleiding;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }

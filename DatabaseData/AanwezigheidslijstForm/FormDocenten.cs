@@ -51,7 +51,6 @@ namespace AanwezigheidslijstForm
             {
                 foreach (var item in context.Docenten)
                 {
-                    listBox1.DisplayMember = nameof(Docenten.Naam);
                     listBox1.Items.Add(item);
                 }
             }
@@ -61,12 +60,36 @@ namespace AanwezigheidslijstForm
         {
             using (var context = new AanwezigheidslijstContext())
             {
-                Docenten docent = context.Docenten.FirstOrDefault(a => a.Naam == listBox1.Text);
+                var b = listBox1.SelectedItem as Docenten;
+                Docenten docent = context.Docenten.FirstOrDefault(a => a.Naam == b.Naam);
                 context.Docenten.Remove(docent);
-                DocentenOpleidingen opl = context.DocentenOpleidingen.FirstOrDefault(a => a.Id == docent.Id);
+                
+                DocentenOpleidingen opl = context.DocentenOpleidingen.FirstOrDefault(a => a.Docenten.Id == docent.Id);
+                if (opl != null)
+                {
+                    context.DocentenOpleidingen.Remove(opl);
+                }
                 context.SaveChanges();
+                MessageBox.Show("Docent verwijdert");
+
             }
-           
+
         }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                var b = listBox1.SelectedItem as Docenten;
+                Docenten docent = context.Docenten.FirstOrDefault(a => a.Naam == b.Naam);
+                docent.Naam = textBoxContactpersoon.Text;
+                docent.Bedrijf = textBoxOpleiding.Text;
+                context.SaveChanges();
+                MessageBox.Show("Docent Aangepast");
+            }
+            
+        }
+
+       
     }
 }

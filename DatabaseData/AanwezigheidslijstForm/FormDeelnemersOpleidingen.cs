@@ -54,14 +54,16 @@ namespace AanwezigheidslijstForm
                 var opleidingen = context.Opleidingsinformatie.ToList();
                 foreach (var item in opleidingen)
                 {
-                    comboBox1.DisplayMember = nameof(Opleidingsinformatie.Opleiding);
                     comboBox1.Items.Add(item);
                 }
                 var deelnemers = context.Deelnemers.ToList();
                 foreach (var item in deelnemers)
                 {
-                    comboBox2.DisplayMember = nameof(Deelnemers.Naam);
                     comboBox2.Items.Add(item);
+                }
+                foreach (var item in context.DeelnemersOpleidingen)
+                {
+                    listBox1.Items.Add(item);
                 }
             }
         }
@@ -71,24 +73,32 @@ namespace AanwezigheidslijstForm
             this.Close();
         }
 
-        private void Label2_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e)
         {
-
+            using (var context = new AanwezigheidslijstContext())
+            {
+                var b = listBox1.SelectedItem as DeelnemersOpleidingen;
+                DeelnemersOpleidingen deelnemersOpl = context.DeelnemersOpleidingen.FirstOrDefault(a => a.Deelnemers.Naam == b.Deelnemers.Naam);
+                context.DeelnemersOpleidingen.Remove(deelnemersOpl);
+                MessageBox.Show("deelnemer is uitgeschreven");
+                context.SaveChanges();
+            }
         }
 
-        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void Button4_Click(object sender, EventArgs e)
         {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                var b = listBox1.SelectedItem as DeelnemersOpleidingen;
+                DeelnemersOpleidingen deelnemersOpl = context.DeelnemersOpleidingen.FirstOrDefault(a => a.Deelnemers.Naam == b.Deelnemers.Naam);
+                var checkbox2 = comboBox2.SelectedItem as Deelnemers;
+                deelnemersOpl.Deelnemers = checkbox2;
 
-        }
-
-        private void ComboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Label1_Click(object sender, EventArgs e)
-        {
-
+                var checkbox = comboBox1.SelectedItem as Opleidingsinformatie;
+                deelnemersOpl.Opleidingsinformatie = checkbox;
+                context.SaveChanges();
+                MessageBox.Show("Aangepast");
+            }
         }
     }
 }

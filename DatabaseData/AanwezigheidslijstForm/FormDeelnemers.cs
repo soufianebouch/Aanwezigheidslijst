@@ -48,5 +48,58 @@ namespace AanwezigheidslijstForm
         {
             this.Close();
         }
+
+        private void FormDeelnemers_Load(object sender, EventArgs e)
+        {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                foreach (var item in context.Deelnemers)
+                {
+                    //listBox1.DisplayMember = nameof(Deelnemers.Naam);
+                    listBox1.Items.Add(item);
+                    //listBox1.Items.Add(item);
+                }
+            }
+        }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                var b = listBox1.SelectedItem as Deelnemers;
+                Deelnemers deelnemers = context.Deelnemers.FirstOrDefault(a => a.Naam == b.Naam);
+                context.Deelnemers.Remove(deelnemers);
+
+                DeelnemersOpleidingen opl = context.DeelnemersOpleidingen.FirstOrDefault(a => a.Deelnemers.Id == deelnemers.Id);
+                if (opl != null)
+                {
+                    context.DeelnemersOpleidingen.Remove(opl);
+                }
+
+                Tijdsregistraties tijd = context.Tijdsregistraties.FirstOrDefault(a => a.Deelnemers.Id == deelnemers.Id);
+                if (tijd != null)
+                {
+                    context.Tijdsregistraties.Remove(tijd);
+                }
+                context.SaveChanges();
+                MessageBox.Show("Deelnemer verwijdert");
+            }
+        }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                var b = listBox1.SelectedItem as Deelnemers;
+                Deelnemers deelnemers = context.Deelnemers.FirstOrDefault(a => a.Naam == b.Naam);
+                deelnemers.Naam = textBoxContactpersoon.Text;
+                deelnemers.Geboortedatum = dateTimePicker2.Value;
+                deelnemers.Woonplaats = textBoxOpleiding.Text;
+                //NOG AF TE WERKEN
+                deelnemers.BadgeNummer = 0;
+                context.SaveChanges();
+                MessageBox.Show("Deelnemer aangepast");
+            }
+        }
     }
 }

@@ -11,5 +11,9 @@ namespace DatabaseAanmaken2
         public int Id { get; set; }
         public virtual Deelnemers Deelnemers { get; set; }
         public virtual Opleidingsinformatie Opleidingsinformatie { get; set; }
+        public override string ToString()
+        {
+            return Deelnemers.Naam + "  " + Opleidingsinformatie.Opleiding;
+        }
     }
 }

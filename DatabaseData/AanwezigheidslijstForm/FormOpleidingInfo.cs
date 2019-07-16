@@ -59,9 +59,70 @@ namespace AanwezigheidslijstForm
             }
         }
 
-        private void TextBoxOpleidingscode_TextChanged(object sender, EventArgs e)
+        private void Button4_Click(object sender, EventArgs e)
         {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                var b = listBox1.SelectedItem as Opleidingsinformatie;
+                Opleidingsinformatie opl = context.Opleidingsinformatie.FirstOrDefault(a => a.Id == b.Id);
+                opl.Contactpersoon = textBoxContactpersoon.Text;
+                opl.EindDatum = dateTimePicker2.Value;
+                opl.Opleiding = textBoxOpleiding.Text;
+                opl.Opleidingscode = int.Parse(textBoxOpleidingscode.Text);
+                opl.Opleidingsinstelling = textBoxOpleidingInstelling.Text;
+                opl.StartDatum = dateTimePicker1.Value;
+                context.SaveChanges();
+                MessageBox.Show("opleiding aangepast");
+            }
+        }
 
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                var b = listBox1.SelectedItem as Opleidingsinformatie;
+                Opleidingsinformatie opleiding = context.Opleidingsinformatie.FirstOrDefault(a => a.Opleiding == b.Opleiding);
+                context.Opleidingsinformatie.Remove(opleiding);
+
+                DeelnemersOpleidingen opl = context.DeelnemersOpleidingen.FirstOrDefault(a => a.Opleidingsinformatie.Id == opleiding.Id);
+                if (opl != null)
+                {
+                    context.DeelnemersOpleidingen.Remove(opl);
+                }
+
+                Tijdsregistraties tijd = context.Tijdsregistraties.FirstOrDefault(a => a.Opleidingsinformatie.Id == opleiding.Id);
+                if (tijd != null)
+                {
+                    context.Tijdsregistraties.Remove(tijd);
+                }
+
+                DocentenOpleidingen doc = context.DocentenOpleidingen.FirstOrDefault(a => a.Opleidingsinformatie.Id == opleiding.Id);
+                if (doc != null)
+                {
+                    context.DocentenOpleidingen.Remove(doc);
+                }
+
+                NietOpleidingsDagen niet = context.NietOpleidingsDagen.FirstOrDefault(a => a.Opleidingsinformatie.Id == opleiding.Id);
+                if (niet != null)
+                {
+                    context.NietOpleidingsDagen.Remove(niet);
+                }
+
+                context.SaveChanges();
+                MessageBox.Show("Opleiding verwijdert");
+            }
+           
+        }
+
+        private void FormOpleidingInfo_Load(object sender, EventArgs e)
+        {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                foreach (var item in context.Opleidingsinformatie)
+                {
+                    listBox1.Items.Add(item);
+                }
+            }
         }
     }
 }

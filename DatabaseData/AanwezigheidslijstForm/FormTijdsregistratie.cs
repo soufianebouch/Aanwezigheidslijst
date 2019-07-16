@@ -25,14 +25,17 @@ namespace AanwezigheidslijstForm
                 var opleidingen = context.Opleidingsinformatie.ToList();
                 foreach (var item in opleidingen)
                 {
-                    comboBox1.DisplayMember = nameof(Opleidingsinformatie.Opleiding);
                     comboBox1.Items.Add(item);
                 }
                 var deelnemers = context.Deelnemers.ToList();
                 foreach (var item in deelnemers)
                 {
-                    comboBox2.DisplayMember = nameof(Deelnemers.Naam);
                     comboBox2.Items.Add(item);
+                }
+                var listbox = context.Tijdsregistraties.ToList();
+                foreach (var item in listbox)
+                {
+                    listBox1.Items.Add(item);
                 }
             }
         }
@@ -72,6 +75,16 @@ namespace AanwezigheidslijstForm
             }
         }
 
-        
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            using (var ctx = new AanwezigheidslijstContext())
+            {
+                var b = listBox1.SelectedItem as Tijdsregistraties;
+                Tijdsregistraties tijd = ctx.Tijdsregistraties.FirstOrDefault(a => a.Id == b.Id);
+                ctx.Tijdsregistraties.Remove(tijd);
+                MessageBox.Show("Tijdsregistratie verwijdert");
+                ctx.SaveChanges();
+            }
+        }
     }
 }

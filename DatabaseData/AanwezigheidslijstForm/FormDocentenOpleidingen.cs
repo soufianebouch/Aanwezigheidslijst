@@ -26,13 +26,13 @@ namespace AanwezigheidslijstForm
                 {
                     var docentOpl = new DocentenOpleidingen();
 
-                    var checkbox = comboBox1.SelectedItem as Opleidingsinformatie;
-                    var nietOplDag = context.Opleidingsinformatie.SingleOrDefault(a => a.Opleiding == checkbox.Opleiding);
-                    docentOpl.Opleidingsinformatie = nietOplDag;
+                    var checkbox = comboBox2.SelectedItem as Docenten;
+                    var docent = context.Docenten.SingleOrDefault(a => a.Id == checkbox.Id);
+                    docentOpl.Docenten = docent;
 
-                    var checkbox2 = comboBox2.SelectedItem as Docenten;
-                    var deelOpl = context.Docenten.SingleOrDefault(a => a.Id == checkbox2.Id);
-                    docentOpl.Docenten = deelOpl;
+                    var checkbox2 = comboBox1.SelectedItem as Opleidingsinformatie;
+                    var opl = context.Opleidingsinformatie.SingleOrDefault(a => a.Id == checkbox2.Id);
+                    docentOpl.Opleidingsinformatie = opl;
 
                     context.DocentenOpleidingen.Add(docentOpl);
                     context.SaveChanges();
@@ -58,16 +58,35 @@ namespace AanwezigheidslijstForm
                 var opleidingen = context.Opleidingsinformatie.ToList();
                 foreach (var item in opleidingen)
                 {
-                    comboBox1.DisplayMember = nameof(Opleidingsinformatie.Opleiding);
                     comboBox1.Items.Add(item);
                 }
                 var docenten = context.Docenten.ToList();
                 foreach (var item in docenten)
                 {
-                    comboBox2.DisplayMember = nameof(Docenten.Naam);
                     comboBox2.Items.Add(item);
                 }
+                foreach (var item in context.DocentenOpleidingen)
+                {
+                    listBox1.Items.Add(item);
+                }
             }
+        }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                var b = listBox1.SelectedItem as DocentenOpleidingen;
+                DocentenOpleidingen docentenOpleidingen = context.DocentenOpleidingen.FirstOrDefault(a => a.Opleidingsinformatie.Opleiding == b.Opleidingsinformatie.Opleiding);
+                context.DocentenOpleidingen.Remove(docentenOpleidingen);
+                MessageBox.Show("docent is uitgeschreven");
+                context.SaveChanges();
+            }
+        }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            //PRAKTISCH NUT?
         }
     }
 }

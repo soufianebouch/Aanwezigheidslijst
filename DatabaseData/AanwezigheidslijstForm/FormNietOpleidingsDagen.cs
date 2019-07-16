@@ -60,10 +60,25 @@ namespace AanwezigheidslijstForm
                 var opleidingen = context.Opleidingsinformatie.ToList();
                 foreach (var item in opleidingen)
                 {
-                    comboBox1.DisplayMember = nameof(Opleidingsinformatie.Opleiding);
                     comboBox1.Items.Add(item);
                 }
-                //var id = context.Opleidingsinformatie.Include
+                var nietOpl = context.NietOpleidingsDagen.ToList();
+                foreach (var item in nietOpl)
+                {
+                    listBox1.Items.Add(item);
+                }
+            }
+        }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                var b = listBox1.SelectedItem as NietOpleidingsDagen;
+                NietOpleidingsDagen nietOpl = context.NietOpleidingsDagen.FirstOrDefault(a => a.Id == b.Id);
+                context.NietOpleidingsDagen.Remove(nietOpl);
+                MessageBox.Show("Geen vakantiedag meer");
+                context.SaveChanges();
             }
         }
     }

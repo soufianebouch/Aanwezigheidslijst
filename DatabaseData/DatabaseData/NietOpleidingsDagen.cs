@@ -13,5 +13,9 @@ namespace DatabaseAanmaken2
         public bool Voormiddag { get; set; }
         public bool Namiddag { get; set; }
         public virtual Opleidingsinformatie Opleidingsinformatie { get; set; }
+        public override string ToString()
+        {
+            return Datum + "  -  " + Opleidingsinformatie;
+        }
     }
 }

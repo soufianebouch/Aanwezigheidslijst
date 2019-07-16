@@ -11,5 +11,10 @@ namespace DatabaseAanmaken2
         public int Id { get; set; }
         public string Naam { get; set; }
         public string Bedrijf { get; set; }
+
+        public override string ToString()
+        {
+            return Naam + "  " + Bedrijf;
+        }
     }
 }

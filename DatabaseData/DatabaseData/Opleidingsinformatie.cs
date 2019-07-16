@@ -15,5 +15,9 @@ namespace DatabaseAanmaken2
         public int Opleidingscode { get; set; }
         public DateTime StartDatum { get; set; }
         public DateTime EindDatum { get; set; }
+        public override string ToString()
+        {
+            return Opleiding + " - " + Contactpersoon + " - " + StartDatum;
+        }
     }
 }

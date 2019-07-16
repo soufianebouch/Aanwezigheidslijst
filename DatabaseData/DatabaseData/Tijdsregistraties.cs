@@ -13,5 +13,9 @@ namespace DatabaseAanmaken2
         public DateTime DateTime { get; set; }
         public virtual Opleidingsinformatie Opleidingsinformatie { get; set; }
         public virtual Deelnemers Deelnemers { get; set; }
+        public override string ToString()
+        {
+            return Deelnemers.Naam + " - " + Opleidingsinformatie.Opleiding + " - " + DateTime;
+        }
     }
 }
