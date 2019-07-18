@@ -76,11 +76,21 @@ namespace AanwezigheidslijstForm
                     context.DeelnemersOpleidingen.Remove(opl);
                 }
 
-                Tijdsregistraties tijd = context.Tijdsregistraties.FirstOrDefault(a => a.Deelnemers.Id == deelnemers.Id);
-                if (tijd != null)
+                var verwijdertijd = from tijdr in context.Tijdsregistraties
+                                    join deeln in context.Deelnemers on tijdr.Deelnemers.Id equals deeln.Id
+                                    where deeln.Id == b.Id
+                                    select tijdr;
+                foreach (var item in verwijdertijd)
                 {
-                    context.Tijdsregistraties.Remove(tijd);
+                    context.Tijdsregistraties.Remove(item);
                 }
+
+
+                //Tijdsregistraties tijd = context.Tijdsregistraties.FirstOrDefault(a => a.Deelnemers.Id == deelnemers.Id);
+                //if (tijd != null)
+                //{
+                //    context.Tijdsregistraties.Remove(tijd);
+                //}
                 context.SaveChanges();
                 MessageBox.Show("Deelnemer verwijdert");
             }

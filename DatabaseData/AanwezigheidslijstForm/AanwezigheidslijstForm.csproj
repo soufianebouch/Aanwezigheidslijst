@@ -53,6 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormBadgen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBadgen.Designer.cs">
+      <DependentUpon>FormBadgen.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormDocenten.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,6 +115,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormBadgen.resx">
+      <DependentUpon>FormBadgen.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormDocenten.resx">
       <DependentUpon>FormDocenten.cs</DependentUpon>
     </EmbeddedResource>

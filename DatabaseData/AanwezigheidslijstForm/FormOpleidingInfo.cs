@@ -17,10 +17,21 @@ namespace AanwezigheidslijstForm
         {
             InitializeComponent();
         }
-
-        private void Button1_Click(object sender, EventArgs e)
+        private void FormOpleidingInfo_Load(object sender, EventArgs e)
         {
-            if (textBoxOpleiding.Text != "" && int.Parse(textBoxOpleidingscode.Text) != 0 && textBoxOpleidingInstelling.Text != "")
+            using (var context = new AanwezigheidslijstContext())
+            {
+                foreach (var item in context.Opleidingsinformatie)
+                {
+                    listBox1.Items.Add(item);
+                }
+            }
+        }
+
+        private void Button1_Click(object sender, EventArgs e) //OPLEIDING TOEVOEGEN
+        {
+            if (textBoxOpleiding.Text != "" && int.Parse(textBoxOpleidingscode.Text) != 0 && textBoxOpleidingInstelling.Text != ""
+                && dateTimePicker1.Value.DayOfYear > DateTime.Now.DayOfYear && dateTimePicker2.Value.DayOfYear > dateTimePicker1.Value.DayOfYear)
             {
                 using (var context = new AanwezigheidslijstContext())
                 {
@@ -35,13 +46,21 @@ namespace AanwezigheidslijstForm
                     context.SaveChanges();
                     MessageBox.Show("Opleiding toegevoegd");
                 }
+                listBox1.Items.Clear();
+                using (var context = new AanwezigheidslijstContext())
+                {
+                    foreach (var item in context.Opleidingsinformatie)
+                    {
+                        listBox1.Items.Add(item);
+                    }
+                }
+
             }
             else
             {
-                MessageBox.Show("Gelieve de gegevens in te vullen");
+                MessageBox.Show("Gelieve de gegevens correct in te vullen");
             }
 
-            this.Close();
         }
 
         private void Button2_Click(object sender, EventArgs e)
@@ -49,17 +68,9 @@ namespace AanwezigheidslijstForm
             this.Close();
         }
 
-        private void DateTimePicker1_Validating(object sender, CancelEventArgs e)
-        {
-            var startDate = dateTimePicker1.Value;
-            if (startDate < DateTime.Now)
-            {
-                MessageBox.Show("startdatum kan niet vroeger dan vandaag zijn");
-                dateTimePicker1.Value = DateTime.Now;
-            }
-        }
+        
 
-        private void Button4_Click(object sender, EventArgs e)
+        private void Button4_Click(object sender, EventArgs e)   //EDIT
         {
             using (var context = new AanwezigheidslijstContext())
             {
@@ -74,54 +85,101 @@ namespace AanwezigheidslijstForm
                 context.SaveChanges();
                 MessageBox.Show("opleiding aangepast");
             }
-        }
-
-        private void Button3_Click(object sender, EventArgs e)
-        {
-            using (var context = new AanwezigheidslijstContext())
-            {
-                var b = listBox1.SelectedItem as Opleidingsinformatie;
-                Opleidingsinformatie opleiding = context.Opleidingsinformatie.FirstOrDefault(a => a.Opleiding == b.Opleiding);
-                context.Opleidingsinformatie.Remove(opleiding);
-
-                DeelnemersOpleidingen opl = context.DeelnemersOpleidingen.FirstOrDefault(a => a.Opleidingsinformatie.Id == opleiding.Id);
-                if (opl != null)
-                {
-                    context.DeelnemersOpleidingen.Remove(opl);
-                }
-
-                Tijdsregistraties tijd = context.Tijdsregistraties.FirstOrDefault(a => a.Opleidingsinformatie.Id == opleiding.Id);
-                if (tijd != null)
-                {
-                    context.Tijdsregistraties.Remove(tijd);
-                }
-
-                DocentenOpleidingen doc = context.DocentenOpleidingen.FirstOrDefault(a => a.Opleidingsinformatie.Id == opleiding.Id);
-                if (doc != null)
-                {
-                    context.DocentenOpleidingen.Remove(doc);
-                }
-
-                NietOpleidingsDagen niet = context.NietOpleidingsDagen.FirstOrDefault(a => a.Opleidingsinformatie.Id == opleiding.Id);
-                if (niet != null)
-                {
-                    context.NietOpleidingsDagen.Remove(niet);
-                }
-
-                context.SaveChanges();
-                MessageBox.Show("Opleiding verwijdert");
-            }
-           
-        }
-
-        private void FormOpleidingInfo_Load(object sender, EventArgs e)
-        {
+            listBox1.Items.Clear();
             using (var context = new AanwezigheidslijstContext())
             {
                 foreach (var item in context.Opleidingsinformatie)
                 {
                     listBox1.Items.Add(item);
                 }
+            }
+        }
+
+        private void Button3_Click(object sender, EventArgs e)  //DELETE
+        {
+            using (var context = new AanwezigheidslijstContext())
+            {
+                //OPLEIDING VERWIJDEREN
+                var b = listBox1.SelectedItem as Opleidingsinformatie;
+                Opleidingsinformatie opleiding = context.Opleidingsinformatie.FirstOrDefault(a => a.Opleiding == b.Opleiding);
+                context.Opleidingsinformatie.Remove(opleiding);
+                //*
+
+                //DEELNEMEROPLEIDING VERWIJDEREN
+                var opl = from deeln in context.DeelnemersOpleidingen
+                          join opl1 in context.Opleidingsinformatie on deeln.Opleidingsinformatie.Opleiding equals opl1.Opleiding
+                          where deeln.Opleidingsinformatie.Opleiding == b.Opleiding
+                          select deeln;
+
+                    foreach (var item in opl)
+                    {
+                        context.DeelnemersOpleidingen.Remove(item);
+                    }
+                //*
+
+                //TIJDSREGISTRATIES VERWIJDEREN
+                var verwijdertijd = from tijdr in context.Tijdsregistraties
+                                    join opl1 in context.Opleidingsinformatie on tijdr.Opleidingsinformatie.Opleiding equals opl1.Opleiding
+                                    where tijdr.Opleidingsinformatie.Opleiding == b.Opleiding
+                                    select tijdr;
+
+                foreach (var item in verwijdertijd)
+                {
+                    context.Tijdsregistraties.Remove(item);
+                }
+                //*
+
+                //DOCENT VERWIJDEREN
+                DocentenOpleidingen doc = context.DocentenOpleidingen.FirstOrDefault(a => a.Opleidingsinformatie.Id == opleiding.Id);
+                if (doc != null)
+                {
+                    context.DocentenOpleidingen.Remove(doc);
+                }
+                //*
+
+                //NIETOPLEIDINGSDAG VERWIJDEREN
+                NietOpleidingsDagen niet = context.NietOpleidingsDagen.FirstOrDefault(a => a.Opleidingsinformatie.Id == opleiding.Id);
+                if (niet != null)
+                {
+                    context.NietOpleidingsDagen.Remove(niet);
+                }
+                //*
+
+                context.SaveChanges();
+                MessageBox.Show("Opleiding verwijdert");
+            }
+            listBox1.Items.Clear();
+            using (var context = new AanwezigheidslijstContext())
+            {
+                foreach (var item in context.Opleidingsinformatie)
+                {
+                    listBox1.Items.Add(item);
+                }
+            }
+
+        }
+
+        
+
+        private void TextBoxOpleidingscode_Validating(object sender, CancelEventArgs e)
+        {
+            int distance;
+            if (int.TryParse(textBoxOpleidingscode.Text, out distance))
+            {
+            }
+            else
+            {
+                MessageBox.Show("Code mag enkel nummerieke waarden bevatten");
+                textBoxOpleidingscode.Clear();
+            }
+        }
+        private void DateTimePicker1_Validating(object sender, CancelEventArgs e)
+        {
+            var startDate = dateTimePicker1.Value;
+            if (startDate < DateTime.Now)
+            {
+                MessageBox.Show("startdatum kan niet vroeger dan vandaag zijn");
+                dateTimePicker1.Value = DateTime.Now;
             }
         }
     }

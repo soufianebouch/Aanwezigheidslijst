@@ -58,5 +58,10 @@ namespace AanwezigheidslijstForm
             var create = new FormTijdsregistratie();
             create.Show();
         }
+
+        private void Button7_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

@@ -21,11 +21,15 @@ namespace AanwezigheidslijstForm
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            //using (var create = new CreateForm())
-            //{
-                var create = new CreateForm();
-                create.Show();
-            //}
+            var create = new CreateForm();
+            create.Show();
+
+        }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            var create = new FormBadgen();
+            create.Show();
         }
     }
 }

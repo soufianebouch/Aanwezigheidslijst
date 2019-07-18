@@ -15,7 +15,7 @@ namespace DatabaseAanmaken2
         public virtual Opleidingsinformatie Opleidingsinformatie { get; set; }
         public override string ToString()
         {
-            return Datum + "  -  " + Opleidingsinformatie;
+            return Datum + "    " + Voormiddag + "  -  " + Opleidingsinformatie;
         }
     }
 }

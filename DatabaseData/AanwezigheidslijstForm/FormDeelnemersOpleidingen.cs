@@ -28,11 +28,11 @@ namespace AanwezigheidslijstForm
                     
 
                     var checkbox = comboBox1.SelectedItem as Opleidingsinformatie;
-                    var nietOplDag = context.Opleidingsinformatie.SingleOrDefault(a => a.Opleiding == checkbox.Opleiding);
-                    deelnemersOpl.Opleidingsinformatie = nietOplDag;
+                    var opl = context.Opleidingsinformatie.FirstOrDefault(a => a.Opleiding == checkbox.Opleiding);
+                    deelnemersOpl.Opleidingsinformatie = opl;
 
                     var checkbox2 = comboBox2.SelectedItem as Deelnemers;
-                    var deelOpl = context.Deelnemers.SingleOrDefault(a => a.Id == checkbox2.Id);
+                    var deelOpl = context.Deelnemers.FirstOrDefault(a => a.Id == checkbox2.Id);
                     deelnemersOpl.Deelnemers = deelOpl;
 
                     context.DeelnemersOpleidingen.Add(deelnemersOpl);
@@ -78,6 +78,8 @@ namespace AanwezigheidslijstForm
             using (var context = new AanwezigheidslijstContext())
             {
                 var b = listBox1.SelectedItem as DeelnemersOpleidingen;
+
+
                 DeelnemersOpleidingen deelnemersOpl = context.DeelnemersOpleidingen.FirstOrDefault(a => a.Deelnemers.Naam == b.Deelnemers.Naam);
                 context.DeelnemersOpleidingen.Remove(deelnemersOpl);
                 MessageBox.Show("deelnemer is uitgeschreven");

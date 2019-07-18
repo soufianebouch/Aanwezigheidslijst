@@ -15,7 +15,7 @@ namespace DatabaseAanmaken2
         public virtual Deelnemers Deelnemers { get; set; }
         public override string ToString()
         {
-            return Deelnemers.Naam + " - " + Opleidingsinformatie.Opleiding + " - " + DateTime;
+            return /*Deelnemers.Naam + " - " + Opleidingsinformatie.Opleiding + " - " +*/ DateTime.ToString()/*("MM/dd/yyyy H:mm") DateTime.ToLongTimeString() + "  " + DateTime.ToLongDateString()*/;
         }
     }
 }
