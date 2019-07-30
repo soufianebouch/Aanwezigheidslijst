@@ -14,7 +14,7 @@ namespace DatabaseAanmaken2
 
         public override string ToString()
         {
-            return Naam + "  " + Bedrijf;
+            return Naam + " \t" + Bedrijf;
         }
     }
 }

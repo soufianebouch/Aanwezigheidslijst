@@ -13,9 +13,14 @@ namespace DatabaseAanmaken2
         public DateTime Geboortedatum { get; set; }
         public string Woonplaats { get; set; }
         public int BadgeNummer { get; set; }
+
+        public Deelnemers()
+        {
+            BadgeNummer = Id;
+        }
         public override string ToString()
         {
-            return Naam + "  " + Woonplaats;
+            return Naam + " \t" + Woonplaats;
         }
     }
 }

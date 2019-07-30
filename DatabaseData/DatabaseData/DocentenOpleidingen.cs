@@ -13,7 +13,7 @@ namespace DatabaseAanmaken2
         public virtual Opleidingsinformatie Opleidingsinformatie { get; set; }
         public override string ToString()
         {
-            return "Docent: "+ Docenten + "  "+ "Opleidingsinformatie:"  + Opleidingsinformatie;
+            return "Docent: "+ Docenten + "\t"+ "Opleidingsinformatie: "  + Opleidingsinformatie.Opleiding;
         }
     }
 }

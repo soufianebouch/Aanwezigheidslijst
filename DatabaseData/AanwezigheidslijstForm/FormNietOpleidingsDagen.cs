@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using DatabaseAanmaken2;
+using System.Data.Entity;
 
 namespace AanwezigheidslijstForm
 {
@@ -20,8 +21,10 @@ namespace AanwezigheidslijstForm
 
         private void Button1_Click(object sender, EventArgs e)
         {
-            if (checkBox1.Checked == true || checkBox2.Checked == true && dateTimePicker2.Value > DateTime.Now)
+            if ( dateTimePicker2.Value > DateTime.Now && checkBox1.Checked == true || checkBox2.Checked == true)
             {
+                listBox1.Items.Clear();
+
                 using (var context = new AanwezigheidslijstContext())
                 {
                     var nietopleidingsDagen = new NietOpleidingsDagen();
@@ -38,8 +41,26 @@ namespace AanwezigheidslijstForm
                     context.NietOpleidingsDagen.Add(nietopleidingsDagen);
                     context.SaveChanges();
                     MessageBox.Show("Niet opleidingsdag toegevoegd");
+
+                    var b = comboBox1.SelectedItem as Opleidingsinformatie;
+                    //var deelnemers = context.Deelnemers.Select(deelnem => new { })
+                    var query = from nto in context.NietOpleidingsDagen
+                                join opli in context.Opleidingsinformatie on nto.Opleidingsinformatie.Id equals opli.Id
+                                where nto.Opleidingsinformatie.Id == b.Id
+                                select nto;
+                    foreach (var item in query.Include(x => x.Opleidingsinformatie))
+                    {
+                        listBox1.Items.Add(item);
+                    }
+                    //foreach (var item in context.NietOpleidingsDagen.Include(x=>x.Opleidingsinformatie))
+                    //{
+                    //    listBox1.Items.Add(item);
+                    //}
                 }
-                this.Close();
+                //using (var ctx = new AanwezigheidslijstContext())
+                //{
+                    
+                //}
             }
             else
             {
@@ -70,15 +91,54 @@ namespace AanwezigheidslijstForm
             }
         }
 
-        private void Button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e) //VERWIJDEREN
         {
             using (var context = new AanwezigheidslijstContext())
             {
                 var b = listBox1.SelectedItem as NietOpleidingsDagen;
                 NietOpleidingsDagen nietOpl = context.NietOpleidingsDagen.FirstOrDefault(a => a.Id == b.Id);
                 context.NietOpleidingsDagen.Remove(nietOpl);
-                MessageBox.Show("Geen vakantiedag meer");
+                MessageBox.Show("Vakantiedag verwijdert");
                 context.SaveChanges();
+
+                listBox1.Items.Clear();
+                var c = comboBox1.SelectedItem as Opleidingsinformatie;
+                //var deelnemers = context.Deelnemers.Select(deelnem => new { })
+                var query = from nto in context.NietOpleidingsDagen
+                            join opli in context.Opleidingsinformatie on nto.Opleidingsinformatie.Id equals opli.Id
+                            where nto.Opleidingsinformatie.Id == c.Id
+                            select nto;
+                foreach (var item in query.Include(x => x.Opleidingsinformatie))
+                {
+                    listBox1.Items.Add(item);
+                }
+            }
+
+            //listBox1.Items.Clear();
+            //using (var ctx = new AanwezigheidslijstContext())
+            //{
+            //    foreach (var item in ctx.NietOpleidingsDagen.Include(x => x.Opleidingsinformatie))
+            //    {
+            //        listBox1.Items.Add(item);
+            //    }
+            //}
+        }
+
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+            using (var context = new AanwezigheidslijstContext())
+            {
+                var b = comboBox1.SelectedItem as Opleidingsinformatie;
+                //var deelnemers = context.Deelnemers.Select(deelnem => new { })
+                var query = from nto in context.NietOpleidingsDagen
+                            join opli in context.Opleidingsinformatie on nto.Opleidingsinformatie.Id equals opli.Id
+                            where nto.Opleidingsinformatie.Id == b.Id
+                            select nto;
+                foreach (var item in query.Include(x => x.Opleidingsinformatie))
+                {
+                    listBox1.Items.Add(item);
+                }
             }
         }
     }

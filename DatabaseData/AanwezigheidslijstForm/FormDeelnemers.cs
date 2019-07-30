@@ -17,7 +17,7 @@ namespace AanwezigheidslijstForm
         {
             InitializeComponent();
         }
-        private void Button1_Click(object sender, EventArgs e)
+        private void Button1_Click(object sender, EventArgs e) //TOEVOEGEN
         {
             
             if (textBoxOpleiding.Text != "" && textBoxContactpersoon.Text != "" && dateTimePicker2.Value < DateTime.Now)
@@ -30,12 +30,19 @@ namespace AanwezigheidslijstForm
                     deelnemers.Woonplaats = textBoxOpleiding.Text;
                     //NOG AF TE WERKEN
 
-                    deelnemers.BadgeNummer = 0; 
+                    //deelnemers.BadgeNummer = deelnemers.Id; 
                     context.Deelnemers.Add(deelnemers);
                     context.SaveChanges();
                     MessageBox.Show("deelnemer toegevoegd");
                 }
-                this.Close();
+                listBox1.Items.Clear();
+                using (var context = new AanwezigheidslijstContext())
+                {
+                    foreach (var item in context.Deelnemers)
+                    {
+                        listBox1.Items.Add(item);
+                    }
+                }
             }
             else
             {
@@ -62,23 +69,23 @@ namespace AanwezigheidslijstForm
             }
         }
 
-        private void Button3_Click(object sender, EventArgs e)
+        private void Button3_Click(object sender, EventArgs e) //REMOVE
         {
             using (var context = new AanwezigheidslijstContext())
             {
                 var b = listBox1.SelectedItem as Deelnemers;
-                Deelnemers deelnemers = context.Deelnemers.FirstOrDefault(a => a.Naam == b.Naam);
+                Deelnemers deelnemers = context.Deelnemers.FirstOrDefault(a => a.Id == b.Id);
                 context.Deelnemers.Remove(deelnemers);
 
-                DeelnemersOpleidingen opl = context.DeelnemersOpleidingen.FirstOrDefault(a => a.Deelnemers.Id == deelnemers.Id);
+                DeelnemersOpleidingen opl = context.DeelnemersOpleidingen.FirstOrDefault(a => a.Deelnemers.Naam == deelnemers.Naam);
                 if (opl != null)
                 {
                     context.DeelnemersOpleidingen.Remove(opl);
                 }
 
                 var verwijdertijd = from tijdr in context.Tijdsregistraties
-                                    join deeln in context.Deelnemers on tijdr.Deelnemers.Id equals deeln.Id
-                                    where deeln.Id == b.Id
+                                    join deeln in context.Deelnemers on tijdr.Deelnemers.Naam equals deeln.Naam
+                                    where deeln.Naam == b.Naam
                                     select tijdr;
                 foreach (var item in verwijdertijd)
                 {
@@ -94,21 +101,40 @@ namespace AanwezigheidslijstForm
                 context.SaveChanges();
                 MessageBox.Show("Deelnemer verwijdert");
             }
-        }
-
-        private void Button4_Click(object sender, EventArgs e)
-        {
+            listBox1.Items.Clear();
             using (var context = new AanwezigheidslijstContext())
             {
-                var b = listBox1.SelectedItem as Deelnemers;
-                Deelnemers deelnemers = context.Deelnemers.FirstOrDefault(a => a.Naam == b.Naam);
-                deelnemers.Naam = textBoxContactpersoon.Text;
-                deelnemers.Geboortedatum = dateTimePicker2.Value;
-                deelnemers.Woonplaats = textBoxOpleiding.Text;
-                //NOG AF TE WERKEN
-                deelnemers.BadgeNummer = 0;
-                context.SaveChanges();
-                MessageBox.Show("Deelnemer aangepast");
+                foreach (var item in context.Deelnemers)
+                {
+                    listBox1.Items.Add(item);
+                }
+            }
+        }
+
+        private void Button4_Click(object sender, EventArgs e) //AANPASSEN
+        {
+            if (listBox1.SelectedItem != null)
+            {
+                using (var context = new AanwezigheidslijstContext())
+                {
+                    var b = listBox1.SelectedItem as Deelnemers;
+                    Deelnemers deelnemers = context.Deelnemers.FirstOrDefault(a => a.Id == b.Id);
+                    deelnemers.Naam = textBoxContactpersoon.Text;
+                    deelnemers.Geboortedatum = dateTimePicker2.Value;
+                    deelnemers.Woonplaats = textBoxOpleiding.Text;
+                    //NOG AF TE WERKEN
+                    deelnemers.BadgeNummer = 0;
+                    context.SaveChanges();
+                    MessageBox.Show("Deelnemer aangepast");
+                }
+                listBox1.Items.Clear();
+                using (var context = new AanwezigheidslijstContext())
+                {
+                    foreach (var item in context.Deelnemers)
+                    {
+                        listBox1.Items.Add(item);
+                    }
+                }
             }
         }
     }
