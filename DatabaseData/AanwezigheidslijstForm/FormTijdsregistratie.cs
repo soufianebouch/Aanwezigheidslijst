@@ -86,5 +86,10 @@ namespace AanwezigheidslijstForm
                 ctx.SaveChanges();
             }
         }
+
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

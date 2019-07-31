@@ -28,11 +28,12 @@ namespace AanwezigheidslijstForm
                     deelnemers.Naam = textBoxContactpersoon.Text;
                     deelnemers.Geboortedatum = dateTimePicker2.Value;
                     deelnemers.Woonplaats = textBoxOpleiding.Text;
-                    //NOG AF TE WERKEN
-
-                    //deelnemers.BadgeNummer = deelnemers.Id; 
+                   
                     context.Deelnemers.Add(deelnemers);
                     context.SaveChanges();
+                    deelnemers.BadgeNummer = deelnemers.Id;
+                    context.SaveChanges();
+
                     MessageBox.Show("deelnemer toegevoegd");
                 }
                 listBox1.Items.Clear();

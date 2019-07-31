@@ -17,7 +17,7 @@ namespace DatabaseAanmaken2
         public DateTime EindDatum { get; set; }
         public override string ToString()
         {
-            return Opleiding + " - " + Contactpersoon + "\t" + StartDatum;
+            return Opleiding + " - " + Contactpersoon + "\t \t" + StartDatum;
         }
     }
 }
