@@ -65,27 +65,31 @@ namespace AanwezigheidslijstForm
 
         private void Button3_Click(object sender, EventArgs e) //DELETE
         {
-            using (var context = new AanwezigheidslijstContext())
+            if (listBox1.SelectedItem != null)
             {
-                var b = listBox1.SelectedItem as Docenten;
-                Docenten docent = context.Docenten.FirstOrDefault(a => a.Naam == b.Naam);
-                context.Docenten.Remove(docent);
 
-                DocentenOpleidingen opl = context.DocentenOpleidingen.FirstOrDefault(a => a.Docenten.Id == docent.Id);
-                if (opl != null)
+                using (var context = new AanwezigheidslijstContext())
                 {
-                    context.DocentenOpleidingen.Remove(opl);
+                    var b = listBox1.SelectedItem as Docenten;
+                    Docenten docent = context.Docenten.FirstOrDefault(a => a.Naam == b.Naam);
+                    context.Docenten.Remove(docent);
+
+                    DocentenOpleidingen opl = context.DocentenOpleidingen.FirstOrDefault(a => a.Docenten.Id == docent.Id);
+                    if (opl != null)
+                    {
+                        context.DocentenOpleidingen.Remove(opl);
+                    }
+                    context.SaveChanges();
+                    MessageBox.Show("Docent verwijdert");
+
                 }
-                context.SaveChanges();
-                MessageBox.Show("Docent verwijdert");
-
-            }
-            listBox1.Items.Clear();
-            using (var ctx = new AanwezigheidslijstContext())
-            {
-                foreach (var item in ctx.Docenten)
+                listBox1.Items.Clear();
+                using (var ctx = new AanwezigheidslijstContext())
                 {
-                    listBox1.Items.Add(item);
+                    foreach (var item in ctx.Docenten)
+                    {
+                        listBox1.Items.Add(item);
+                    }
                 }
             }
         }

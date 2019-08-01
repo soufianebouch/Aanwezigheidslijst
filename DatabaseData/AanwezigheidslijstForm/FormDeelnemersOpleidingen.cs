@@ -120,31 +120,35 @@ namespace AanwezigheidslijstForm
 
         private void Button4_Click(object sender, EventArgs e) //AANPASSEN
         {
-            using (var context = new AanwezigheidslijstContext())
+            if (listBox1.SelectedItem != null)
             {
-                var b = listBox1.SelectedItem as DeelnemersOpleidingen;
-                DeelnemersOpleidingen deelnemersOpl = context.DeelnemersOpleidingen.FirstOrDefault(a => a.Deelnemers.Naam == b.Deelnemers.Naam);
 
-                var checkbox2 = comboBox2.SelectedItem as Deelnemers;
-                Deelnemers dln = context.Deelnemers.FirstOrDefault(a => a.Id == checkbox2.Id);
-                deelnemersOpl.Deelnemers = dln;
-
-                var checkbox = comboBox1.SelectedItem as Opleidingsinformatie;
-                Opleidingsinformatie opl = context.Opleidingsinformatie.FirstOrDefault(a => a.Id == checkbox.Id);
-                deelnemersOpl.Opleidingsinformatie = opl;
-                context.SaveChanges();
-                MessageBox.Show("Aangepast");
-
-                listBox1.Items.Clear();
-
-                var c = comboBox1.SelectedItem as Opleidingsinformatie;
-                var query = from dno in context.DeelnemersOpleidingen
-                            join opli in context.Opleidingsinformatie on dno.Opleidingsinformatie.Id equals opli.Id
-                            where dno.Opleidingsinformatie.Id == c.Id
-                            select dno;
-                foreach (var item in query.Include(x => x.Opleidingsinformatie).Include(x => x.Deelnemers))
+                using (var context = new AanwezigheidslijstContext())
                 {
-                    listBox1.Items.Add(item);
+                    var b = listBox1.SelectedItem as DeelnemersOpleidingen;
+                    DeelnemersOpleidingen deelnemersOpl = context.DeelnemersOpleidingen.FirstOrDefault(a => a.Deelnemers.Naam == b.Deelnemers.Naam);
+
+                    var checkbox2 = comboBox2.SelectedItem as Deelnemers;
+                    Deelnemers dln = context.Deelnemers.FirstOrDefault(a => a.Id == checkbox2.Id);
+                    deelnemersOpl.Deelnemers = dln;
+
+                    var checkbox = comboBox1.SelectedItem as Opleidingsinformatie;
+                    Opleidingsinformatie opl = context.Opleidingsinformatie.FirstOrDefault(a => a.Id == checkbox.Id);
+                    deelnemersOpl.Opleidingsinformatie = opl;
+                    context.SaveChanges();
+                    MessageBox.Show("Aangepast");
+
+                    listBox1.Items.Clear();
+
+                    var c = comboBox1.SelectedItem as Opleidingsinformatie;
+                    var query = from dno in context.DeelnemersOpleidingen
+                                join opli in context.Opleidingsinformatie on dno.Opleidingsinformatie.Id equals opli.Id
+                                where dno.Opleidingsinformatie.Id == c.Id
+                                select dno;
+                    foreach (var item in query.Include(x => x.Opleidingsinformatie).Include(x => x.Deelnemers))
+                    {
+                        listBox1.Items.Add(item);
+                    }
                 }
             }
         }

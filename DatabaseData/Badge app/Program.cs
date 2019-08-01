@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AanwezigheidslijstForm
+namespace Badge_app
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace AanwezigheidslijstForm
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CreateForm());
+            Application.Run(new FormBadgen());
         }
     }
 }

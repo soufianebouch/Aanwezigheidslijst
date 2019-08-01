@@ -72,42 +72,46 @@ namespace AanwezigheidslijstForm
 
         private void Button3_Click(object sender, EventArgs e) //REMOVE
         {
-            using (var context = new AanwezigheidslijstContext())
+            if (listBox1.SelectedItem != null)
             {
-                var b = listBox1.SelectedItem as Deelnemers;
-                Deelnemers deelnemers = context.Deelnemers.FirstOrDefault(a => a.Id == b.Id);
-                context.Deelnemers.Remove(deelnemers);
 
-                DeelnemersOpleidingen opl = context.DeelnemersOpleidingen.FirstOrDefault(a => a.Deelnemers.Naam == deelnemers.Naam);
-                if (opl != null)
+                using (var context = new AanwezigheidslijstContext())
                 {
-                    context.DeelnemersOpleidingen.Remove(opl);
+                    var b = listBox1.SelectedItem as Deelnemers;
+                    Deelnemers deelnemers = context.Deelnemers.FirstOrDefault(a => a.Id == b.Id);
+                    context.Deelnemers.Remove(deelnemers);
+
+                    DeelnemersOpleidingen opl = context.DeelnemersOpleidingen.FirstOrDefault(a => a.Deelnemers.Naam == deelnemers.Naam);
+                    if (opl != null)
+                    {
+                        context.DeelnemersOpleidingen.Remove(opl);
+                    }
+
+                    var verwijdertijd = from tijdr in context.Tijdsregistraties
+                                        join deeln in context.Deelnemers on tijdr.Deelnemers.Naam equals deeln.Naam
+                                        where deeln.Naam == b.Naam
+                                        select tijdr;
+                    foreach (var item in verwijdertijd)
+                    {
+                        context.Tijdsregistraties.Remove(item);
+                    }
+
+
+                    //Tijdsregistraties tijd = context.Tijdsregistraties.FirstOrDefault(a => a.Deelnemers.Id == deelnemers.Id);
+                    //if (tijd != null)
+                    //{
+                    //    context.Tijdsregistraties.Remove(tijd);
+                    //}
+                    context.SaveChanges();
+                    MessageBox.Show("Deelnemer verwijdert");
                 }
-
-                var verwijdertijd = from tijdr in context.Tijdsregistraties
-                                    join deeln in context.Deelnemers on tijdr.Deelnemers.Naam equals deeln.Naam
-                                    where deeln.Naam == b.Naam
-                                    select tijdr;
-                foreach (var item in verwijdertijd)
+                listBox1.Items.Clear();
+                using (var context = new AanwezigheidslijstContext())
                 {
-                    context.Tijdsregistraties.Remove(item);
-                }
-
-
-                //Tijdsregistraties tijd = context.Tijdsregistraties.FirstOrDefault(a => a.Deelnemers.Id == deelnemers.Id);
-                //if (tijd != null)
-                //{
-                //    context.Tijdsregistraties.Remove(tijd);
-                //}
-                context.SaveChanges();
-                MessageBox.Show("Deelnemer verwijdert");
-            }
-            listBox1.Items.Clear();
-            using (var context = new AanwezigheidslijstContext())
-            {
-                foreach (var item in context.Deelnemers)
-                {
-                    listBox1.Items.Add(item);
+                    foreach (var item in context.Deelnemers)
+                    {
+                        listBox1.Items.Add(item);
+                    }
                 }
             }
         }

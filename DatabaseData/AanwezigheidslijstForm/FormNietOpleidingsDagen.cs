@@ -93,27 +93,30 @@ namespace AanwezigheidslijstForm
 
         private void Button3_Click(object sender, EventArgs e) //VERWIJDEREN
         {
-            using (var context = new AanwezigheidslijstContext())
+            if (listBox1.SelectedItem != null)
             {
-                var b = listBox1.SelectedItem as NietOpleidingsDagen;
-                NietOpleidingsDagen nietOpl = context.NietOpleidingsDagen.FirstOrDefault(a => a.Id == b.Id);
-                context.NietOpleidingsDagen.Remove(nietOpl);
-                MessageBox.Show("Vakantiedag verwijdert");
-                context.SaveChanges();
 
-                listBox1.Items.Clear();
-                var c = comboBox1.SelectedItem as Opleidingsinformatie;
-                //var deelnemers = context.Deelnemers.Select(deelnem => new { })
-                var query = from nto in context.NietOpleidingsDagen
-                            join opli in context.Opleidingsinformatie on nto.Opleidingsinformatie.Id equals opli.Id
-                            where nto.Opleidingsinformatie.Id == c.Id
-                            select nto;
-                foreach (var item in query.Include(x => x.Opleidingsinformatie))
+                using (var context = new AanwezigheidslijstContext())
                 {
-                    listBox1.Items.Add(item);
+                    var b = listBox1.SelectedItem as NietOpleidingsDagen;
+                    NietOpleidingsDagen nietOpl = context.NietOpleidingsDagen.FirstOrDefault(a => a.Id == b.Id);
+                    context.NietOpleidingsDagen.Remove(nietOpl);
+                    MessageBox.Show("Vakantiedag verwijdert");
+                    context.SaveChanges();
+
+                    listBox1.Items.Clear();
+                    var c = comboBox1.SelectedItem as Opleidingsinformatie;
+                    //var deelnemers = context.Deelnemers.Select(deelnem => new { })
+                    var query = from nto in context.NietOpleidingsDagen
+                                join opli in context.Opleidingsinformatie on nto.Opleidingsinformatie.Id equals opli.Id
+                                where nto.Opleidingsinformatie.Id == c.Id
+                                select nto;
+                    foreach (var item in query.Include(x => x.Opleidingsinformatie))
+                    {
+                        listBox1.Items.Add(item);
+                    }
                 }
             }
-
             //listBox1.Items.Clear();
             //using (var ctx = new AanwezigheidslijstContext())
             //{

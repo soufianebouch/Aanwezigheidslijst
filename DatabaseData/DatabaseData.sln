@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseData", "DatabaseDat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AanwezigheidslijstForm", "AanwezigheidslijstForm\AanwezigheidslijstForm.csproj", "{1B8B68F1-F68B-44C2-8A33-88BDDA91CEF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Badge app", "Badge app\Badge app.csproj", "{2CC82178-9608-484E-8170-A3D8A90405EF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{1B8B68F1-F68B-44C2-8A33-88BDDA91CEF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B8B68F1-F68B-44C2-8A33-88BDDA91CEF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1B8B68F1-F68B-44C2-8A33-88BDDA91CEF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CC82178-9608-484E-8170-A3D8A90405EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CC82178-9608-484E-8170-A3D8A90405EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CC82178-9608-484E-8170-A3D8A90405EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CC82178-9608-484E-8170-A3D8A90405EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

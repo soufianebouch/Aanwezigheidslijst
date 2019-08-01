@@ -72,31 +72,38 @@ namespace AanwezigheidslijstForm
 
         private void Button4_Click(object sender, EventArgs e)   //EDIT
         {
-            using (var context = new AanwezigheidslijstContext())
+            if (listBox1.SelectedItem != null)
             {
-                var b = listBox1.SelectedItem as Opleidingsinformatie;
-                Opleidingsinformatie opl = context.Opleidingsinformatie.FirstOrDefault(a => a.Id == b.Id);
-                opl.Contactpersoon = textBoxContactpersoon.Text;
-                opl.EindDatum = dateTimePicker2.Value;
-                opl.Opleiding = textBoxOpleiding.Text;
-                opl.Opleidingscode = int.Parse(textBoxOpleidingscode.Text);
-                opl.Opleidingsinstelling = textBoxOpleidingInstelling.Text;
-                opl.StartDatum = dateTimePicker1.Value;
-                context.SaveChanges();
-                MessageBox.Show("opleiding aangepast");
-            }
-            listBox1.Items.Clear();
-            using (var context = new AanwezigheidslijstContext())
-            {
-                foreach (var item in context.Opleidingsinformatie)
+
+                using (var context = new AanwezigheidslijstContext())
                 {
-                    listBox1.Items.Add(item);
+                    var b = listBox1.SelectedItem as Opleidingsinformatie;
+                    Opleidingsinformatie opl = context.Opleidingsinformatie.FirstOrDefault(a => a.Id == b.Id);
+                    opl.Contactpersoon = textBoxContactpersoon.Text;
+                    opl.EindDatum = dateTimePicker2.Value;
+                    opl.Opleiding = textBoxOpleiding.Text;
+                    opl.Opleidingscode = int.Parse(textBoxOpleidingscode.Text);
+                    opl.Opleidingsinstelling = textBoxOpleidingInstelling.Text;
+                    opl.StartDatum = dateTimePicker1.Value;
+                    context.SaveChanges();
+                    MessageBox.Show("opleiding aangepast");
+                }
+                listBox1.Items.Clear();
+                using (var context = new AanwezigheidslijstContext())
+                {
+                    foreach (var item in context.Opleidingsinformatie)
+                    {
+                        listBox1.Items.Add(item);
+                    }
                 }
             }
         }
 
         private void Button3_Click(object sender, EventArgs e)  //DELETE
         {
+            if (listBox1.SelectedItem != null)
+            {
+
             using (var context = new AanwezigheidslijstContext())
             {
                 //OPLEIDING VERWIJDEREN
@@ -157,6 +164,7 @@ namespace AanwezigheidslijstForm
                 }
             }
 
+            }
         }
 
         
